@@ -152,6 +152,18 @@ const updateJobStatus = async (req, res) => {
   }
 };
 
+const getUniqueLocations = async (req, res) => {
+  try {
+    const jobLocations = await JOB.find().select("location");
+    const uniqueLocations = [
+      ...new Set(jobLocations.map((job) => job.location)),
+    ].sort();
+    res.status(200).json({ success: true, location: uniqueLocations });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   getAllJobs,
   getLatestJobs,
@@ -160,4 +172,5 @@ module.exports = {
   applyForJob,
   getUsersAppliedJobs,
   updateJobStatus,
+  getUniqueLocations
 };
